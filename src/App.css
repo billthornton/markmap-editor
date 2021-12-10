@@ -9,7 +9,7 @@
 }
 
 .sidebar[open] {
-  width: 20vw;
+  width: clamp(250px, 22vw, 450px);
 }
 
 .sidebar textarea {
@@ -48,6 +48,10 @@
   height: 100%;
   border-left: 1px solid #0000003b;
   border-right: 1px solid #0000003b;
+}
+.sidebar summary:hover {
+  background-color: #ccc;
+  color: #333;
 }
 
 .sidebar summary .summary-text {
