@@ -40,14 +40,14 @@ function Mindmap({ value }: { value: string }) {
       paddingX: 8,
       nodeFont: `500 10px/12px -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`
     });
-  }, [svgElementRef.current]);
+  }, []);
 
   useEffect(() => {
     const markMap = markMapRef.current;
     const { root } = transformer.transform(value);
     markMap?.setData(root);
     markMap?.fit();
-  }, [markMapRef.current, value]);
+  }, [value]);
 
 
 
