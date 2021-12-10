@@ -85,10 +85,20 @@ function Sidebar({ value, onChange }: { value: string, onChange: any }) {
 
 
 function App() {
-  const [value, setValue] = useState(initValue);
+  const valueFromParams = new URLSearchParams(document.location.search).get('input');
+  const decodedValueFromParams = valueFromParams && atob(valueFromParams);
+  const [value, setValue] = useState(decodedValueFromParams || initValue);
+
+  const updateWithNewValue = (newValue: string) => {
+    const searchParams = new URLSearchParams(document.location.search);
+    searchParams.set("input", btoa(newValue));
+    var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
+    window.history.pushState(null, '', newRelativePathQuery);
+    setValue(newValue);
+  }
 
   return (<>
-    <Sidebar value={value} onChange={setValue} />
+    <Sidebar value={value} onChange={updateWithNewValue} />
     <Mindmap value={value} />
   </>)
 }
