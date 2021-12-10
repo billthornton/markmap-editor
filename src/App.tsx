@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
+import * as d3 from 'd3';
+import { INode } from 'markmap-common';
 import { Transformer } from 'markmap-lib';
 import { Markmap } from 'markmap-view';
-import logo from './logo.svg';
 import './App.css';
 
 const transformer = new Transformer();
@@ -9,6 +10,11 @@ const initValue = `# Title
 
 - one
 - two
+- third item
+  - fourth item
+    second line
+  - five
+    - six
 
 `;
 
@@ -21,7 +27,19 @@ function Mindmap({ value }: { value: string }) {
     if (markMapRef.current) return;
     if (!svgElementRef.current) return;
 
-    markMapRef.current = Markmap.create(svgElementRef.current);
+    markMapRef.current = Markmap.create(svgElementRef.current, {
+      duration: 0,
+      color: (
+        (colorFn) =>
+          (node: INode): string =>
+            colorFn(node.d!.toString())
+      )(d3.scaleOrdinal(["#4c28cf", "#0e52ec", "#ea13b1", "#2ec9c2", "#0fd991", "#d90f32", "#f2c317", "#377eb8", "#4daf4a", "#984ea3", "#ff7f00", "#ffff33", "#a65628", "#f781bf", "#999999"])),
+      nodeMinHeight: 20,
+      spacingVertical: 8,
+      spacingHorizontal: 24,
+      paddingX: 8,
+      nodeFont: `500 10px/12px -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`
+    });
   }, [svgElementRef.current]);
 
   useEffect(() => {

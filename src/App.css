@@ -24,6 +24,7 @@
   box-sizing: border-box;
   border: none;
   resize: none;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 .sidebar textarea:focus {
@@ -41,7 +42,7 @@
   align-items: center;
   justify-content: center;
   background-color: #ececec;
-  color: #8b8b8b;
+  color: #555;
   display: flex;
   width: 16px;
   height: 100%;
