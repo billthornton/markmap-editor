@@ -32,7 +32,7 @@ function Controls({ markMapRef, svgElementRef }: { markMapRef: React.MutableRefO
 
   const exportClick = () => {
     const svgText = svgElementRef?.current?.outerHTML || "";
-    const svgTextWithAttribute = svgText.replace('<svg ', '<svg xmlns="http://www.w3.org/2000/svg" ');
+    const svgTextWithAttribute = svgText.replace('<svg ', '<svg xmlns="http://www.w3.org/2000/svg" ').replace('<br>', '<br></br>');
     const svgFileText = `<?xml version="1.0" encoding="UTF-8"?>${svgTextWithAttribute}`;
 
     const element = document.createElement('a');
