@@ -22,7 +22,7 @@ function Control({ children, onClick }: { children: React.ReactChild | React.Rea
   return <button onClick={onClick} className="controls__button">{children}</button>
 }
 
-function Controls({ markMapRef }: { markMapRef: React.MutableRefObject<Markmap | null> }) {
+function Controls({ markMapRef, svgElementRef }: { markMapRef: React.MutableRefObject<Markmap | null>, svgElementRef: React.MutableRefObject<SVGSVGElement | null> }) {
 
   const onZoom = (multiplier: number) => () => {
     if (markMapRef.current) {
@@ -30,9 +30,23 @@ function Controls({ markMapRef }: { markMapRef: React.MutableRefObject<Markmap |
     }
   }
 
+  const exportClick = () => {
+    const svgText = svgElementRef?.current?.outerHTML || "";
+    const svgTextWithAttribute = svgText.replace('<svg ', '<svg xmlns="http://www.w3.org/2000/svg" ');
+    const svgFileText = `<?xml version="1.0" encoding="UTF-8"?>${svgTextWithAttribute}`;
+
+    const element = document.createElement('a');
+    element.setAttribute('href', 'data:image/svg;base64,' + btoa(svgFileText));
+    element.setAttribute('download', 'mindmap.svg');
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+  }
+
   return <ul className="controls">
     <li><Control onClick={onZoom(1.2)}>+</Control></li>
     <li><Control onClick={onZoom(0.8)}>-</Control></li>
+    <li><Control onClick={exportClick}>Export</Control></li>
   </ul>
 }
 
@@ -119,7 +133,7 @@ function App() {
   return (<>
     <Sidebar value={value} onChange={updateWithNewValue} />
     <Mindmap value={value} markMapRef={markMapRef} svgElementRef={svgElementRef} />
-    <Controls markMapRef={markMapRef} />
+    <Controls markMapRef={markMapRef} svgElementRef={svgElementRef} />
   </>)
 }
 
