@@ -18,11 +18,25 @@ const initValue = `# Title
 
 `;
 
+function Control({ children, onClick }: { children: React.ReactChild | React.ReactChild[], onClick: any }) {
+  return <button onClick={onClick} className="controls__button">{children}</button>
+}
 
-function Mindmap({ value }: { value: string }) {
-  const svgElementRef = useRef<SVGSVGElement | null>(null);
-  const markMapRef = useRef<Markmap | null>(null);
+function Controls({ markMapRef }: { markMapRef: React.MutableRefObject<Markmap | null> }) {
 
+  const onZoom = (multiplier: number) => () => {
+    if (markMapRef.current) {
+      markMapRef.current.rescale(1 * multiplier)
+    }
+  }
+
+  return <ul className="controls">
+    <li><Control onClick={onZoom(1.2)}>+</Control></li>
+    <li><Control onClick={onZoom(0.8)}>-</Control></li>
+  </ul>
+}
+
+function Mindmap({ value, markMapRef, svgElementRef }: { value: string, markMapRef: React.MutableRefObject<Markmap | null>, svgElementRef: React.MutableRefObject<SVGSVGElement | null> }) {
   useEffect(() => {
     if (markMapRef.current) return;
     if (!svgElementRef.current) return;
@@ -38,18 +52,19 @@ function Mindmap({ value }: { value: string }) {
       spacingVertical: 8,
       spacingHorizontal: 24,
       paddingX: 8,
-      nodeFont: `500 10px/12px -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`
+      nodeFont: `400 10px/12px -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`
     });
   }, []);
 
   useEffect(() => {
     const markMap = markMapRef.current;
-    const { root } = transformer.transform(value);
-    markMap?.setData(root);
-    markMap?.fit();
+    if (markMap) {
+      const { root } = transformer.transform(value);
+      markMap.setData(root);
+      markMap.fit();
+    }
+
   }, [value]);
-
-
 
   return (
     <svg className="mindmap" ref={svgElementRef} />
@@ -89,6 +104,10 @@ function App() {
   const decodedValueFromParams = valueFromParams && atob(valueFromParams);
   const [value, setValue] = useState(decodedValueFromParams || initValue);
 
+
+  const markMapRef = useRef<Markmap | null>(null);
+  const svgElementRef = useRef<SVGSVGElement | null>(null);
+
   const updateWithNewValue = (newValue: string) => {
     const searchParams = new URLSearchParams(document.location.search);
     searchParams.set("input", btoa(newValue));
@@ -99,7 +118,8 @@ function App() {
 
   return (<>
     <Sidebar value={value} onChange={updateWithNewValue} />
-    <Mindmap value={value} />
+    <Mindmap value={value} markMapRef={markMapRef} svgElementRef={svgElementRef} />
+    <Controls markMapRef={markMapRef} />
   </>)
 }
 
