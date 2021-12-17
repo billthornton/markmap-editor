@@ -3,6 +3,8 @@ import * as d3 from 'd3';
 import { INode } from 'markmap-common';
 import { Transformer } from 'markmap-lib';
 import { CustomMarkmap } from './custom-markmap';
+import { exportClickPNG, exportClickSVG } from './export';
+
 import './App.css';
 
 const transformer = new Transformer();
@@ -30,20 +32,6 @@ function Controls({ markMapRef, svgElementRef }: { markMapRef: React.MutableRefO
     }
   }
 
-  const exportClick = () => {
-    // TODO: Need to somehow zoom in before capturing - should this be done in an invisible copy?
-    const svgText = svgElementRef?.current?.outerHTML || "";
-    const svgTextWithAttribute = svgText.replace('<svg ', '<svg xmlns="http://www.w3.org/2000/svg" ').replace('<br>', '<br></br>');
-    const svgFileText = `<?xml version="1.0" encoding="UTF-8"?>${svgTextWithAttribute}`;
-
-    const element = document.createElement('a');
-    element.setAttribute('href', 'data:image/svg;base64,' + btoa(svgFileText));
-    element.setAttribute('download', 'mindmap.svg');
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
-  }
-
   const onCollapse = async () => {
     if (markMapRef.current) {
       markMapRef.current.collapseTree();
@@ -62,7 +50,8 @@ function Controls({ markMapRef, svgElementRef }: { markMapRef: React.MutableRefO
     <li><Control title="Zoom out" onClick={onZoom(0.8)}>-</Control></li>
     <li><Control title="Collapse nodes" onClick={onCollapse}>&#60;</Control></li>
     <li><Control title="Expand nodes" onClick={onExpand}>&#62;</Control></li>
-    <li><Control onClick={exportClick}>Export</Control></li>
+    <li><Control onClick={exportClickSVG}>Export SVG</Control></li>
+    <li><Control onClick={exportClickPNG()}>Export PNG</Control></li>
   </ul>
 }
 
@@ -97,7 +86,9 @@ function Mindmap({ value, markMapRef, svgElementRef }: { value: string, markMapR
   }, [markMapRef, value]);
 
   return (
-    <svg className="mindmap" ref={svgElementRef} />
+    <div className='mindmap-wrapper'>
+      <svg className="mindmap" ref={svgElementRef} />
+    </div>
   );
 }
 
