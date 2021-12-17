@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import * as d3 from 'd3';
 import { INode } from 'markmap-common';
 import { Transformer } from 'markmap-lib';
-import { Markmap } from 'markmap-view';
+import { CustomMarkmap } from './custom-markmap';
 import './App.css';
 
 const transformer = new Transformer();
@@ -18,11 +18,11 @@ const initValue = `# Title
 
 `;
 
-function Control({ children, onClick }: { children: React.ReactChild | React.ReactChild[], onClick: any }) {
-  return <button onClick={onClick} className="controls__button">{children}</button>
+function Control({ children, onClick, title }: { children: React.ReactChild | React.ReactChild[], onClick: any, title?: string }) {
+  return <button title={title} onClick={onClick} className="controls__button">{children}</button>
 }
 
-function Controls({ markMapRef, svgElementRef }: { markMapRef: React.MutableRefObject<Markmap | null>, svgElementRef: React.MutableRefObject<SVGSVGElement | null> }) {
+function Controls({ markMapRef, svgElementRef }: { markMapRef: React.MutableRefObject<CustomMarkmap | null>, svgElementRef: React.MutableRefObject<SVGSVGElement | null> }) {
 
   const onZoom = (multiplier: number) => () => {
     if (markMapRef.current) {
@@ -31,6 +31,7 @@ function Controls({ markMapRef, svgElementRef }: { markMapRef: React.MutableRefO
   }
 
   const exportClick = () => {
+    // TODO: Need to somehow zoom in before capturing - should this be done in an invisible copy?
     const svgText = svgElementRef?.current?.outerHTML || "";
     const svgTextWithAttribute = svgText.replace('<svg ', '<svg xmlns="http://www.w3.org/2000/svg" ').replace('<br>', '<br></br>');
     const svgFileText = `<?xml version="1.0" encoding="UTF-8"?>${svgTextWithAttribute}`;
@@ -43,19 +44,34 @@ function Controls({ markMapRef, svgElementRef }: { markMapRef: React.MutableRefO
     document.body.removeChild(element);
   }
 
+  const onCollapse = async () => {
+    if (markMapRef.current) {
+      markMapRef.current.collapseTree();
+      await markMapRef.current.fit();
+    }
+  }
+  const onExpand = async () => {
+    if (markMapRef.current) {
+      markMapRef.current.expandTree();
+      await markMapRef.current.fit();
+    }
+  }
+
   return <ul className="controls">
-    <li><Control onClick={onZoom(1.2)}>+</Control></li>
-    <li><Control onClick={onZoom(0.8)}>-</Control></li>
+    <li><Control title="Zoom in" onClick={onZoom(1.2)}>+</Control></li>
+    <li><Control title="Zoom out" onClick={onZoom(0.8)}>-</Control></li>
+    <li><Control title="Collapse nodes" onClick={onCollapse}>&#60;</Control></li>
+    <li><Control title="Expand nodes" onClick={onExpand}>&#62;</Control></li>
     <li><Control onClick={exportClick}>Export</Control></li>
   </ul>
 }
 
-function Mindmap({ value, markMapRef, svgElementRef }: { value: string, markMapRef: React.MutableRefObject<Markmap | null>, svgElementRef: React.MutableRefObject<SVGSVGElement | null> }) {
+function Mindmap({ value, markMapRef, svgElementRef }: { value: string, markMapRef: React.MutableRefObject<CustomMarkmap | null>, svgElementRef: React.MutableRefObject<SVGSVGElement | null> }) {
   useEffect(() => {
     if (markMapRef.current) return;
     if (!svgElementRef.current) return;
 
-    markMapRef.current = Markmap.create(svgElementRef.current, {
+    markMapRef.current = new CustomMarkmap(svgElementRef.current, {
       duration: 0,
       color: (
         (colorFn) =>
@@ -68,7 +84,7 @@ function Mindmap({ value, markMapRef, svgElementRef }: { value: string, markMapR
       paddingX: 8,
       nodeFont: `400 10px/12px -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`
     });
-  }, []);
+  }, [markMapRef, svgElementRef]);
 
   useEffect(() => {
     const markMap = markMapRef.current;
@@ -78,7 +94,7 @@ function Mindmap({ value, markMapRef, svgElementRef }: { value: string, markMapR
       markMap.fit();
     }
 
-  }, [value]);
+  }, [markMapRef, value]);
 
   return (
     <svg className="mindmap" ref={svgElementRef} />
@@ -112,14 +128,13 @@ function Sidebar({ value, onChange }: { value: string, onChange: any }) {
   )
 }
 
-
 function App() {
   const valueFromParams = new URLSearchParams(document.location.search).get('input');
   const decodedValueFromParams = valueFromParams && atob(valueFromParams);
   const [value, setValue] = useState(decodedValueFromParams || initValue);
 
 
-  const markMapRef = useRef<Markmap | null>(null);
+  const markMapRef = useRef<CustomMarkmap | null>(null);
   const svgElementRef = useRef<SVGSVGElement | null>(null);
 
   const updateWithNewValue = (newValue: string) => {
