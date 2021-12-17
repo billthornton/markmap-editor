@@ -4,6 +4,8 @@ object-assign
 @license MIT
 */
 
+/*! dom-to-image-more 06-12-2021 */
+
 /*! js-yaml 4.1.0 https://github.com/nodeca/js-yaml @license MIT */
 
 /*! markmap-common v0.1.6 | MIT License */
