@@ -21,7 +21,7 @@ const getSafeSVG = (backgroundColour?: string) => {
     return svgFileText;
 }
 
-export const exportClickSVG = () => {
+export const downloadAsSvg = () => {
     const svgFileText = getSafeSVG();
     const dataURL = `data:image/svg;base64,${btoa(svgFileText)}`;
 
@@ -41,6 +41,6 @@ const convertAndDownload = (conversionFn: ConvertFunction, filename: string) => 
     downloadString(dataURL, filename);
 }
 
-export const exportClickPNG = convertAndDownload(domtoimage.toPng, 'mindmap.png');
+export const downloadAsPng = convertAndDownload(domtoimage.toPng, 'mindmap.png');
 // Below is very slow, but has accurate text rendering - maybe make optional?
-export const exportClickSVGSlow = convertAndDownload(domtoimage.toSvg, 'mindmap.svg');
+export const downloadAsSvgSlow = convertAndDownload(domtoimage.toSvg, 'mindmap.svg');

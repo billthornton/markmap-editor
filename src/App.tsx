@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 import { INode } from 'markmap-common';
 import { Transformer } from 'markmap-lib';
 import { CustomMarkmap } from './custom-markmap';
-import { exportClickPNG, exportClickSVG } from './export';
+import { downloadAsPng, downloadAsSvg } from './export';
 
 import './App.css';
 
@@ -50,8 +50,8 @@ function Controls({ markMapRef, svgElementRef }: { markMapRef: React.MutableRefO
     <li><Control title="Zoom out" onClick={onZoom(0.8)}>-</Control></li>
     <li><Control title="Collapse nodes" onClick={onCollapse}>&#60;</Control></li>
     <li><Control title="Expand nodes" onClick={onExpand}>&#62;</Control></li>
-    <li><Control onClick={exportClickSVG}>Export SVG</Control></li>
-    <li><Control onClick={exportClickPNG()}>Export PNG</Control></li>
+    <li><Control onClick={downloadAsSvg}>Export SVG</Control></li>
+    <li><Control onClick={downloadAsPng()}>Export PNG</Control></li>
   </ul>
 }
 

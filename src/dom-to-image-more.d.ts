@@ -14,6 +14,5 @@ declare module 'dom-to-image-more' {
         scale?: number | undefined;
     }
 
-    // (node: Node, options?: Options): Promise<string>;
     export type ConvertFunction = (node: Node, options?: Options) => Promise<string>;
 }
