@@ -1,6 +1,7 @@
 
 import { Markmap } from 'markmap-view';
 import { INode } from 'markmap-common';
+import { IMarkmapFlexTreeItem } from 'markmap-view/types/types';
 
 // The circle between columns counts as one
 // so we must remove two
@@ -30,6 +31,18 @@ const markChildrenAsVisible = (depthCutoff: number) => (child: INode) => {
     }
 };
 
+const markAllChildrenAsVisible = (child: INode) => {
+    if (child?.d) {
+        child.p.f = false;
+    }
+};
+
+const markAllChildrenAsHidden = (child: INode) => {
+    if (child?.d) {
+        child.p.f = true;
+    }
+};
+
 function modifyChildVisibility(node: INode, modifyNode: Function): void {
     modifyNode(node);
 
@@ -56,5 +69,28 @@ export class CustomMarkmap extends Markmap {
         modifyChildVisibility(this.state.data, modifyNode);
 
         this.renderData();
+    }
+    handleClick(event: any, d: IMarkmapFlexTreeItem) {
+        const shouldExpandWholeTree = event.shiftKey;
+        const shouldExpandAdjacentTree = event.altKey;
+
+        const node = d.data;
+        const hiddenChildren = node?.p?.f === true;
+
+        if (shouldExpandWholeTree) {
+            const modifyNode = hiddenChildren ? markAllChildrenAsVisible : markAllChildrenAsHidden;
+            modifyChildVisibility(node, modifyNode);
+        } else if (shouldExpandAdjacentTree) {
+            const maxLevel = node.d || -1;
+            const modifyNode = hiddenChildren ? markChildrenAsVisible(maxLevel) : markChildrenAsHidden(maxLevel);
+            modifyChildVisibility(d.parent.data, modifyNode);
+        } else {
+            node.p = {
+                ...node.p,
+                f: !hiddenChildren,
+            };
+        }
+
+        this.renderData(node);
     }
 }
