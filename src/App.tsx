@@ -4,6 +4,8 @@ import { INode } from 'markmap-common';
 import { Transformer } from 'markmap-lib';
 import { CustomMarkmap } from './custom-markmap';
 import { downloadAsPng, downloadAsSvg } from './export';
+import { IconDownload, IconArrowNarrowLeft, IconArrowNarrowRight, IconZoomIn } from '@tabler/icons';
+import { IconZoomOut } from './icon-zoom-out';
 
 import './App.css';
 
@@ -46,12 +48,12 @@ function Controls({ markMapRef, svgElementRef }: { markMapRef: React.MutableRefO
   }
 
   return <ul className="controls">
-    <li><Control title="Zoom in" onClick={onZoom(1.2)}>+</Control></li>
-    <li><Control title="Zoom out" onClick={onZoom(0.8)}>-</Control></li>
-    <li><Control title="Collapse nodes" onClick={onCollapse}>&#60;</Control></li>
-    <li><Control title="Expand nodes" onClick={onExpand}>&#62;</Control></li>
-    <li><Control onClick={downloadAsSvg}>Export SVG</Control></li>
-    <li><Control onClick={downloadAsPng()}>Export PNG</Control></li>
+    <li><Control title="Zoom in" onClick={onZoom(1.2)}><IconZoomIn size="18" /></Control></li>
+    <li><Control title="Zoom out" onClick={onZoom(0.8)}><IconZoomOut size="18" /></Control></li>
+    <li><Control title="Collapse nodes" onClick={onCollapse}><IconArrowNarrowLeft size="18" /></Control></li>
+    <li><Control title="Expand nodes" onClick={onExpand}><IconArrowNarrowRight size="18" /></Control></li>
+    <li><Control title="Download as SVG" onClick={downloadAsSvg}><IconDownload size="18" /> <span className="control__button-text">SVG</span></Control></li>
+    <li><Control title="Download as PNG" onClick={downloadAsPng()}><IconDownload size="18" /> <span className="control__button-text">PNG</span></Control></li>
   </ul>
 }
 
