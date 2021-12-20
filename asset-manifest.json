@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/markmap-editor/static/css/main.550d1359.css",
+    "main.css": "/markmap-editor/static/css/main.9f12d65a.css",
     "main.js": "/markmap-editor/static/js/main.c02c18aa.js",
     "static/js/787.20532b4b.chunk.js": "/markmap-editor/static/js/787.20532b4b.chunk.js",
     "index.html": "/markmap-editor/index.html",
-    "main.550d1359.css.map": "/markmap-editor/static/css/main.550d1359.css.map",
+    "main.9f12d65a.css.map": "/markmap-editor/static/css/main.9f12d65a.css.map",
     "main.c02c18aa.js.map": "/markmap-editor/static/js/main.c02c18aa.js.map",
     "787.20532b4b.chunk.js.map": "/markmap-editor/static/js/787.20532b4b.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.550d1359.css",
+    "static/css/main.9f12d65a.css",
     "static/js/main.c02c18aa.js"
   ]
 }
