@@ -1,22 +1,15 @@
 {
   "files": {
-    "main.css": "/markmap-editor/static/css/main.45c28f3b.chunk.css",
-    "main.js": "/markmap-editor/static/js/main.c7adf901.chunk.js",
-    "main.js.map": "/markmap-editor/static/js/main.c7adf901.chunk.js.map",
-    "runtime-main.js": "/markmap-editor/static/js/runtime-main.cf194fdc.js",
-    "runtime-main.js.map": "/markmap-editor/static/js/runtime-main.cf194fdc.js.map",
-    "static/js/2.a3fc288c.chunk.js": "/markmap-editor/static/js/2.a3fc288c.chunk.js",
-    "static/js/2.a3fc288c.chunk.js.map": "/markmap-editor/static/js/2.a3fc288c.chunk.js.map",
-    "static/js/3.d933f4aa.chunk.js": "/markmap-editor/static/js/3.d933f4aa.chunk.js",
-    "static/js/3.d933f4aa.chunk.js.map": "/markmap-editor/static/js/3.d933f4aa.chunk.js.map",
+    "main.css": "/markmap-editor/static/css/main.550d1359.css",
+    "main.js": "/markmap-editor/static/js/main.c02c18aa.js",
+    "static/js/787.20532b4b.chunk.js": "/markmap-editor/static/js/787.20532b4b.chunk.js",
     "index.html": "/markmap-editor/index.html",
-    "static/css/main.45c28f3b.chunk.css.map": "/markmap-editor/static/css/main.45c28f3b.chunk.css.map",
-    "static/js/2.a3fc288c.chunk.js.LICENSE.txt": "/markmap-editor/static/js/2.a3fc288c.chunk.js.LICENSE.txt"
+    "main.550d1359.css.map": "/markmap-editor/static/css/main.550d1359.css.map",
+    "main.c02c18aa.js.map": "/markmap-editor/static/js/main.c02c18aa.js.map",
+    "787.20532b4b.chunk.js.map": "/markmap-editor/static/js/787.20532b4b.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/runtime-main.cf194fdc.js",
-    "static/js/2.a3fc288c.chunk.js",
-    "static/css/main.45c28f3b.chunk.css",
-    "static/js/main.c7adf901.chunk.js"
+    "static/css/main.550d1359.css",
+    "static/js/main.c02c18aa.js"
   ]
 }
