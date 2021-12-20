@@ -13,7 +13,7 @@ Web interface hosted here 👉 https://billthornton.github.io/markmap-editor/
 ## Features
 
 - Create a mindmap just by entering Markdown text
-- Shareable URL that contains the Markdown text
+- Shareable URL
 - Collapsable sidebar
 - Zoom controls
 - Save as PNG and SVG files
@@ -28,6 +28,8 @@ Web interface hosted here 👉 https://billthornton.github.io/markmap-editor/
 
 
 ## Credits / Dependencies
+
+This couldn't be done without these great projects below:
 
 - [Markmap](https://github.com/gera2ld/markmap)
   - [d3-flextree](https://github.com/Klortho/d3-flextree)
